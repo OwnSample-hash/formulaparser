@@ -1,0 +1,3 @@
+[submodule "lib/parser"]
+	path = lib/parser
+	url = git@github.com:OwnSample-hash/parser.git
