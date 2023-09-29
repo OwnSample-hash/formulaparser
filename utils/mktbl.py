@@ -1,26 +1,27 @@
-def str2bin(num:int,pad:int):
-    bins = ""
-    do  = True
+def dec2any(num:int,pad:int,base:int=2) -> str:
+    outs = ""
+    do = True
     while do:
-        bins += str(num % 2)
-        num = int(str(num / 2).split('.')[0].split(',')[0])
+        outs += str(num % base)
+        num = int(str(num / base).split('.')[0].split(',')[0])
         if num == 0:
             do = False
-    bins = bins[::-1]
-    if len(bins) < pad:
-        diff = pad - len(bins)
-        bins = "0"*diff+bins
+    outs = outs[::-1]
+    if len(outs) < pad:
+        diff = pad - len(outs)
+        outs = "0"*diff+outs
     # print(bins)
-    return bins
+    return outs
 
 def make_table(size:int):
     limit = 2**size
     table = []
     for num in range(0,limit):
-        tmp = str2bin(num,size)
+        tmp = dec2any(num, size)
         row = []
         for i in range(0, size):
             row.append(tmp[i])
         table.append(row)
     # pp(table)
     return table
+
