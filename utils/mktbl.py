@@ -1,5 +1,5 @@
-def dec2any(num:int,pad:int,base:int=2) -> str:
-    outs = ""
+def dec2anys(num: int, pad: int, base: int = 2) -> str:
+    outs = ''
     do = True
     while do:
         outs += str(num % base)
@@ -9,19 +9,19 @@ def dec2any(num:int,pad:int,base:int=2) -> str:
     outs = outs[::-1]
     if len(outs) < pad:
         diff = pad - len(outs)
-        outs = "0"*diff+outs
+        outs = '0' * diff + outs
     # print(bins)
     return outs
 
-def make_table(size:int):
+
+def make_table(size: int):
     limit = 2**size
     table = []
-    for num in range(0,limit):
-        tmp = dec2any(num, size)
+    for num in range(0, limit):
+        tmp = dec2anys(num, size)
         row = []
         for i in range(0, size):
             row.append(tmp[i])
         table.append(row)
     # pp(table)
     return table
-
