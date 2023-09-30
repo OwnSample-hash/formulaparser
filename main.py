@@ -13,11 +13,19 @@ def help():
 
 if __name__ == '__main__':
     help()
-    size = int(input('How many elements?> '))
+    try:
+        size = int(input('How many elements?> '))
+    except EOFError:
+        print('Bye')
+        quit(0)
     table = make_table(size)
     last_evaled_prompt = ''
     while 1:
-        ogp = input('>')
+        try:
+            ogp = input('>')
+        except EOFError:
+            print('Bye')
+            quit(0)
         prompt = ogp.upper()
         if prompt == 'Q':
             print('Bye')
