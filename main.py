@@ -1,5 +1,4 @@
 #!/bin/env python3
-from string import ascii_uppercase
 from utils import *
 
 #!(A&B) == !A|!B
