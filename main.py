@@ -9,23 +9,29 @@ from utils import *
 
 def help():
     print(
-        """
-        q to quit\n
-        re to resize table\n
-        w to save the last expr.\n
-        r to reevaluate last expression\n
-        ? to help
-        """
+        """q to quit
+re to resize table
+w to save the last expr.
+r to reevaluate last expression
+? to help"""
     )
 
 
-if __name__ == '__main__':
-    help()
+def get_size() -> int:
     try:
         size = int(input('How many elements?> '))
     except EOFError:
         print('Bye')
         quit(0)
+    except ValueError:
+        print('Invalid elements size')
+        return get_size()
+    return size
+
+
+if __name__ == '__main__':
+    help()
+    size = get_size()
     table = make_table(size)
     last_evaled_prompt = ''
     while 1:
