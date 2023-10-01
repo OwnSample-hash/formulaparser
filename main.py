@@ -8,7 +8,15 @@ from utils import *
 
 
 def help():
-    print('q to quit\nre to resize table\nw to save the last expr.\n? to help')
+    print(
+        """
+        q to quit\n
+        re to resize table\n
+        w to save the last expr.\n
+        r to reevaluate last expression\n
+        ? to help
+        """
+    )
 
 
 if __name__ == '__main__':
@@ -30,8 +38,6 @@ if __name__ == '__main__':
         if prompt == 'Q':
             print('Bye')
             break
-        if prompt == 'R':
-            prompt = last_evaled_prompt
 
         if prompt == 'RE':
             size = int(input('How many elements?> '))
@@ -68,6 +74,10 @@ if __name__ == '__main__':
             save(last_evaled_prompt, fn, size, table)
             print('Done!')
             continue
+
+        if prompt == 'R':
+            print('Reevaluating last expression!')
+            prompt = last_evaled_prompt
 
         if not prompt:
             print('Empty prompt try again!')
