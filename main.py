@@ -30,6 +30,8 @@ if __name__ == '__main__':
         if prompt == 'Q':
             print('Bye')
             break
+        if prompt == 'R':
+            prompt = last_evaled_prompt
 
         if prompt == 'RE':
             size = int(input('How many elements?> '))

@@ -1,5 +1,6 @@
 from string import ascii_uppercase
-from utils import check_dm, dedupchar
+from identity import check_dm
+from utils import dedupchar
 from typing import List
 
 
