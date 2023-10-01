@@ -5,6 +5,6 @@ def get_size() -> int:
         print('Bye')
         quit(0)
     except ValueError:
-        print('Invalid elements size')
+        print('Invalid variable number')
         return get_size()
     return size
