@@ -17,18 +17,6 @@ r to reevaluate last expression
     )
 
 
-def get_size() -> int:
-    try:
-        size = int(input('How many elements?> '))
-    except EOFError:
-        print('Bye')
-        quit(0)
-    except ValueError:
-        print('Invalid elements size')
-        return get_size()
-    return size
-
-
 if __name__ == '__main__':
     help()
     size = get_size()
@@ -106,6 +94,6 @@ if __name__ == '__main__':
                 exec(f'print({ascii_uppercase[i]}, end=" ")')
             try:
                 print('|', eval(prompt))
-                last_evaled_prompt = prompt
             except:
                 print('Err')
+        last_evaled_prompt = prompt
