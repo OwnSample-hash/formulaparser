@@ -13,6 +13,8 @@ def help():
 re to resize table
 w to save the last expr.
 r to reevaluate last expression
+p to print out the table
+q or eof to quit
 ? to help"""
     )
 
@@ -73,6 +75,18 @@ if __name__ == '__main__':
             print('Reevaluating last expression!')
             prompt = last_evaled_prompt
 
+        if prompt == 'P':
+            print('Printing table')
+            for i in range(size):
+                print(ascii_uppercase[i], end=' ')
+            print()
+            for it in table:
+                for i in range(size):
+                    exec(f'{ascii_uppercase[i]} = int(it[{i}])')
+                    exec(f'print({ascii_uppercase[i]}, end=" ")')
+                print()
+            continue
+
         if not prompt:
             print('Empty prompt try again!')
             continue
@@ -88,6 +102,7 @@ if __name__ == '__main__':
             print(ascii_uppercase[i], end=' ')
         prompt = dedupchar(prompt)
         print(f'{check_dm(prompt)}')
+        abort_ = False
         for it in table:
             for i in range(size):
                 exec(f'{ascii_uppercase[i]} = int(it[{i}])')
@@ -95,5 +110,11 @@ if __name__ == '__main__':
             try:
                 print('|', eval(prompt))
             except:
-                print('Err')
+                print(
+                    '\nErr happend in evaluation of the expression\nAborting...'
+                )
+                abort_ = True
+                break
+            if abort_:
+                break
         last_evaled_prompt = prompt
