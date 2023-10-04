@@ -1,11 +1,10 @@
 def dec2anys(num: int, pad: int, base: int = 2) -> str:
     outs = ''
-    do = True
-    while do:
+    while 1:
         outs += str(num % base)
         num = int(str(num / base).split('.')[0].split(',')[0])
         if num == 0:
-            do = False
+            break
     outs = outs[::-1]
     if len(outs) < pad:
         diff = pad - len(outs)
