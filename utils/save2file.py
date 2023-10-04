@@ -1,6 +1,6 @@
 from string import ascii_uppercase
 from identity import check_dm
-from utils import dedupchar
+from utils import dedupwc
 from typing import List
 
 
@@ -8,7 +8,7 @@ def save(expr: str, fn: str, size: int, table: List):
     with open(fn, 'w') as f:
         for i in range(size):
             f.write(f'{ascii_uppercase[i]} ')
-        expr = dedupchar(expr)
+        expr = dedupwc(expr)
         f.write(f'{check_dm(expr)}\n')
         for it in table:   # pyright: ignore
             for i in range(size):
