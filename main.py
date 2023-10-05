@@ -1,11 +1,7 @@
 #!/bin/env python3
+from parser.evaler import Evaler
+from parser.parser import Parser
 from utils import *
-
-#!(A&B) == !A|!B
-#! negate
-# | or
-# & and
-
 
 def help():
     print(
@@ -22,7 +18,8 @@ q or eof to quit
 if __name__ == '__main__':
     help()
     size = get_size()
-    table = make_table(size)
+    ev = Evaler(size)
+    parser = Parser("A")
     last_evaled_prompt = ''
     while 1:
         try:
@@ -37,13 +34,12 @@ if __name__ == '__main__':
 
         if prompt == 'RE':
             size = int(input('How many elements?> '))
-            table = make_table(size)
             print('Resized table to', size)
+            ev.re_size(size)
             continue
 
         if prompt.startswith('RE'):
             size = int(prompt.split(' ')[1])
-            table = make_table(size)
             print('Resized table to', size)
             continue
 
@@ -57,7 +53,7 @@ if __name__ == '__main__':
                 continue
             fn = input('Filename>')
             print(f'Saving to {fn}')
-            save(last_evaled_prompt, fn, size, table)
+            save(last_evaled_prompt, fn, size, ev.table)
             print('Done!')
             continue
 
@@ -67,7 +63,7 @@ if __name__ == '__main__':
                 continue
             fn = ogp.split(' ')[1]
             print(f'Saving to {fn}')
-            save(last_evaled_prompt, fn, size, table)
+            save(last_evaled_prompt, fn, size, ev.table)
             print('Done!')
             continue
 
@@ -80,7 +76,7 @@ if __name__ == '__main__':
             for i in range(size):
                 print(ascii_uppercase[i], end=' ')
             print()
-            for it in table:
+            for it in ev.table:
                 for i in range(size):
                     exec(f'{ascii_uppercase[i]} = int(it[{i}])')
                     exec(f'print({ascii_uppercase[i]}, end=" ")')
@@ -91,30 +87,11 @@ if __name__ == '__main__':
             print('Empty prompt try again!')
             continue
 
-        prompt = (
-            prompt.replace('!', ' not ')
-            .replace('&', ' and ')
-            .replace('|', ' or ')
-            .strip()
-        )
-
         for i in range(size):
             print(ascii_uppercase[i], end=' ')
-        prompt = dedupchar(prompt)
+        prompt = dedupwc(prompt)
         print(f'{check_dm(prompt)}')
-        abort_ = False
-        for it in table:
-            for i in range(size):
-                exec(f'{ascii_uppercase[i]} = int(it[{i}])')
-                exec(f'print({ascii_uppercase[i]}, end=" ")')
-            try:
-                print('|', eval(prompt))
-            except:
-                print(
-                    '\nErr happend in evaluation of the expression\nAborting...'
-                )
-                abort_ = True
-                break
-            if abort_:
-                break
+        parsed = parser.parse(prompt)
+        for evc in ev(parsed):
+                print(evc)
         last_evaled_prompt = prompt
