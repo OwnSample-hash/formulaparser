@@ -23,7 +23,7 @@ class Parser:
             ):
                 out = f' and {char}'
             if char == '!':
-                if prev_c == '(' or prev_c[-1:] == ' ':
+                if prev_c == '(' or prev_c[-1:] == ' ' or not prev_c:
                     out = f'not {next(iter_in)}'
                 elif prev_c[-1:] in ascii_uppercase and prev_c:
                     out = f' and not {next(iter_in)}'
