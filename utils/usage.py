@@ -1,4 +1,4 @@
-def help():
+def usage():
     print(
         """q to quit
 re to resize table
