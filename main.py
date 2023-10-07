@@ -2,6 +2,8 @@
 from parser.evaler import Evaler
 from parser.parser import Parser
 from utils import *
+import sys
+
 
 def help():
     print(
@@ -53,7 +55,11 @@ if __name__ == '__main__':
                 continue
             fn = input('Filename>')
             print(f'Saving to {fn}')
-            save(last_evaled_prompt, fn, size, ev.table)
+            with open(fn, "a") as o:
+                osout = sys.stdout
+                sys.stdout = o
+                do(last_evaled_prompt)
+                sys.stdout = osout
             print('Done!')
             continue
 
@@ -63,7 +69,11 @@ if __name__ == '__main__':
                 continue
             fn = ogp.split(' ')[1]
             print(f'Saving to {fn}')
-            save(last_evaled_prompt, fn, size, ev.table)
+            with open(fn, "a") as o:
+                osout = sys.stdout
+                sys.stdout = o
+                do(last_evaled_prompt)
+                sys.stdout = osout
             print('Done!')
             continue
 
