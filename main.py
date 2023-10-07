@@ -13,6 +13,7 @@ re to resize table
 w to save the last expr.
 r to reevaluate last expression
 p to print out the table
+m to toggle more info about the expr.
 q or eof to quit
 ? to help"""
     )
@@ -106,6 +107,11 @@ if __name__ == '__main__':
                     exec(f'{ascii_uppercase[i]} = int(it[{i}])')
                     exec(f'print({ascii_uppercase[i]}, end=" ")')
                 print()
+            continue
+
+        if prompt == 'M':
+            ev.more_info = not ev.more_info
+            print('Enabled' if ev.more_info else 'Disabled', 'more info')
             continue
 
         if not prompt:

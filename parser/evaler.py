@@ -7,6 +7,7 @@ class Evaler:
     def __init__(self, size: int) -> None:
         self.size = size
         self.table: List[List[str]] = make_table(self.size)
+        self.more_info: bool = False
 
     def re_size(self, new_size):
         self.size = new_size
@@ -21,7 +22,9 @@ class Evaler:
                 exec(f'print({ascii_uppercase[i]}, end=" ")')
             try:
                 # print(self.prompt)
-                yield f'| {int(eval(self.prompt))}\t {self.prompt}'
+                yield '| {0}{1}'.format(int(eval(self.prompt)) ,(
+                    '\t' + self.prompt
+                ) if self.more_info else '')
             except:
                 print(
                     '\nErr happend in evaluation of the expression\nAborting...'
