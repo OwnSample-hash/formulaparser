@@ -7,4 +7,6 @@ def get_size() -> int:
     except ValueError:
         print('Invalid variable number')
         return get_size()
+    except KeyboardInterrupt:
+        quit(0)
     return size

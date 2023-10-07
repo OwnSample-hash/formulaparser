@@ -40,6 +40,9 @@ if __name__ == '__main__':
         except EOFError:
             print('Bye')
             quit(0)
+        except KeyboardInterrupt:
+            print('Bye')
+            quit(0)
         prompt = ogp.upper()
         if prompt == 'Q':
             print('Bye')
