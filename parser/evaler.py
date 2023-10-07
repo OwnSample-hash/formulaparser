@@ -19,7 +19,8 @@ class Evaler:
         for it in self.table:   # pyright: ignore
             for i in range(self.size):
                 exec(f'{ascii_uppercase[i]} = int(it[{i}])')
-                exec(f'print({ascii_uppercase[i]}, end=" ")')
+                if not self.raw:
+                    exec(f'print({ascii_uppercase[i]}, end=" ")')
             try:
                 # print(self.prompt)
                 if not self.raw:
