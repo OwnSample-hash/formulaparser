@@ -3,8 +3,8 @@ from typing import List
 
 
 class EXPR(BaseModel):
-    # id: int
+    id: str
     name: str
     expr_raw: str
     expr_par: str
-    res: List[int] | None = None
+    res: List[int]

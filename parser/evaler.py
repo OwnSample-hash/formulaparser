@@ -1,5 +1,7 @@
-from string import ascii_uppercase   # pyright: ignore
+from string import ascii_uppercase
+from sys import exc_info   # pyright: ignore
 from typing import Iterator, List
+from models import EXPR
 from utils.mktbl import make_table
 
 
@@ -8,6 +10,7 @@ class Evaler:
         self.size: int = size
         self.table: List[List[str]] = make_table(self.size)
         self.more_info: bool = False
+        self.expr_list: List[EXPR]
 
     def re_size(self, new_size: int) -> None:
         self.size: int = new_size
@@ -16,11 +19,16 @@ class Evaler:
 
     def __iter__(self) -> Iterator[str | int]:
         abort_ = False
+        j = 0
         for it in self.table:   # pyright: ignore
             for i in range(self.size):
                 exec(f'{ascii_uppercase[i]} = int(it[{i}])')
                 if not self.raw:
                     exec(f'print({ascii_uppercase[i]}, end=" ")')
+            for i in range(len(self.expr_list)):
+                exec(f'{self.expr_list[i].name}={self.expr_list[i].res[j]}')
+                if not self.raw:
+                    exec(f'print({self.expr_list[i].name}, end=" ")')
             try:
                 # print(self.prompt)
                 if not self.raw:
@@ -42,9 +50,11 @@ class Evaler:
                 break
             if abort_:
                 break
+            j += 1
         return
 
-    def __call__(self, prompt: str, raw: bool = False):
+    def __call__(self, prompt: str, expr_list: List[EXPR], raw: bool = False):
         self.prompt = prompt
         self.raw = raw
+        self.expr_list = expr_list
         return self
