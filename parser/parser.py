@@ -16,7 +16,11 @@ class Parser:
             if char in whitespace:
                 continue
             out = char
-            if char in ascii_uppercase and prev_c[-1:] in ascii_uppercase:
+            if (
+                char in ascii_uppercase
+                and prev_c[-1:] in ascii_uppercase
+                and prev_c
+            ):
                 out = f' and {char}'
             if char == '!':
                 if prev_c == '(' or prev_c[-1:] == ' ':
@@ -32,11 +36,11 @@ class Parser:
         # print("parsed:",self.input_str, "=V",)
         return
 
-    def parse(self, input_:str)->str:
-        parsed = ""
+    def parse(self, input_: str) -> str:
+        parsed = ''
         self.input_str = input_
         for parser in self:
-           parsed += parser
+            parsed += parser
         return parsed
 
     def set(self, input: str):
@@ -51,5 +55,9 @@ if __name__ == '__main__':
     print(parsed)
     parsed = ''
     for pc in p.parse('(!a!B)+(!A+!BC)'):
+        parsed += pc
+    print(parsed)
+    parsed = ''
+    for pc in p.parse('ABC+!AB'):
         parsed += pc
     print(parsed)

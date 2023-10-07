@@ -11,7 +11,7 @@ class Evaler:
     def re_size(self, new_size):
         self.size = new_size
         self.table: List[List[str]] = make_table(self.size)
-        self.prompt:str = ""
+        self.prompt: str = ''
 
     def __iter__(self):
         abort_ = False
@@ -32,6 +32,6 @@ class Evaler:
                 break
         return
 
-    def __call__(self, prompt:str):
+    def __call__(self, prompt: str):
         self.prompt = prompt
         return self
