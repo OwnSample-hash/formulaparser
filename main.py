@@ -27,6 +27,11 @@ def do_eval(expr: EXPR):
     expr.res = out
 
 
+def resize_expr_l():
+    for expr in expr_list:
+        [expr.res.append(0) for _ in range(2**size - len(expr.res))]
+
+
 if __name__ == '__main__':
     usage()
     size = get_size()
@@ -50,14 +55,20 @@ if __name__ == '__main__':
 
         if prompt == 'RE':
             size = int(input('How many elements?> '))
-            print('Resized table to', size)
             ev.re_size(size)
+            resize_expr_l()
+            for expr in expr_list:
+                do_eval(expr)
+            print('Resized table to', size, 'and reevaluated expressions')
             continue
 
         if prompt.startswith('RE'):
             size = int(prompt.split(' ')[1])
-            print('Resized table to', size)
             ev.re_size(size)
+            resize_expr_l()
+            for expr in expr_list:
+                do_eval(expr)
+            print('Resized table to', size, 'and reevaluated expressions')
             continue
 
         if prompt == '?':
