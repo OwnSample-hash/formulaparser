@@ -42,7 +42,13 @@ class Evaler:
                     if char in whitespace:
                         continue
                     if char not in list(locals().keys()):
-                        print(f'\n{char} was not defined in this eval ctx!')
+                        for expr in self.expr_list:
+                            if char == expr.name:
+                                print(f'{char} was hidden use "hide {char}" to unhide it.')                        
+                                abort_ = True
+                                break
+                        if not abort_:
+                            print(f'\n{char} was not defined in this eval ctx!')
                         abort_ = True
                         break
                 if not self.raw:

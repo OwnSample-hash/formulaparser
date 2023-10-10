@@ -164,7 +164,7 @@ if __name__ == '__main__':
         if prompt.startswith('LIST'):
             for expr in expr_list:
                 print(
-                    f'{expr.name}:\t{expr.expr_raw if prompt[-1:] == "R" else expr.expr_par}'
+                    f'{expr.name}:\t{expr.expr_raw if prompt[-1:] == "R" else expr.expr_par}\t{"hidden" if expr.hidden else ""}'
                 )
             continue
 
@@ -175,6 +175,8 @@ if __name__ == '__main__':
                 print(ascii_uppercase[i], end=' ')
             print('| ', end='')
             for expr in expr_list:
+                if expr.hidden:
+                    continue
                 print(expr.name, end=' | ')
             print()
             for i in range(2**ev.size):
@@ -182,6 +184,8 @@ if __name__ == '__main__':
                     print(num, end=' ')
                 print('| ', end='')
                 for expr in expr_list:
+                    if expr.hidden:
+                        continue
                     print(expr.res[i], end=' | ')   # pyright: ignore
                 print()
             continue
