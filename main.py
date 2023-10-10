@@ -48,7 +48,11 @@ if __name__ == '__main__':
         except KeyboardInterrupt:
             print('Bye')
             quit(0)
+
         prompt = ogp.upper()
+        if not prompt:
+            print('Empty prompt try again!')
+            continue
         if prompt == 'Q':
             print('Bye')
             break
@@ -143,6 +147,7 @@ if __name__ == '__main__':
                     expr_raw=payload[2],
                     expr_par=parser.parse(payload[2]),
                     res=[0 for _ in range(2**size)],
+                    hidden=False,
                 )
             )
             continue
@@ -181,9 +186,16 @@ if __name__ == '__main__':
                 print()
             continue
 
-        if not prompt:
-            print('Empty prompt try again!')
+        if prompt.startswith('HIDE'):
+            try:
+                item = ogp.split(' ')[1]
+            except:
+                print('Try again')
+                continue
+            for res in [
+                expr.t_hidden() for expr in expr_list if expr.id == item
+            ]:
+                print(res)
             continue
 
         do(prompt)
-        last_evaled_prompt = prompt

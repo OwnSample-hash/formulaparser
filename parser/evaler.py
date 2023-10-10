@@ -1,7 +1,8 @@
-from string import ascii_uppercase
+from string import ascii_uppercase, whitespace
 from sys import exc_info   # pyright: ignore
 from typing import Iterator, List
 from models import EXPR
+from utils.dedupchar import dedupwc
 from utils.mktbl import make_table
 
 
@@ -26,11 +27,24 @@ class Evaler:
                 if not self.raw:
                     exec(f'print({ascii_uppercase[i]}, end=" ")')
             for i in range(len(self.expr_list)):
+                if self.expr_list[i].hidden:
+                    continue
                 exec(f'{self.expr_list[i].name}={self.expr_list[i].res[j]}')
                 if not self.raw:
                     exec(f'print({self.expr_list[i].name}, end=" ")')
             try:
-                # print(self.prompt)
+                vars = dedupwc(
+                    self.prompt.replace('and', '')
+                    .replace('or', '')
+                    .replace('not', '')
+                )
+                for char in vars:
+                    if char in whitespace:
+                        continue
+                    if char not in list(locals().keys()):
+                        print(f'\n{char} was not defined in this eval ctx!')
+                        abort_ = True
+                        break
                 if not self.raw:
                     yield '| {0}{1}'.format(
                         int(eval(self.prompt)),
