@@ -22,7 +22,7 @@ def anys2dec(in_: str, base: int) -> int:
     return out
 
 
-def make_table(size: int):
+def make_table(size: int) -> list[list[str]]:
     limit = 2**size
     table = []
     for num in range(0, limit):
@@ -31,5 +31,4 @@ def make_table(size: int):
         for i in range(0, size):
             row.append(tmp[i])
         table.append(row)
-    # pp(table)
     return table

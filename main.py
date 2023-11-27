@@ -1,29 +1,51 @@
 #!/bin/env python3
 from string import ascii_uppercase
-from typing import List
-from parser.evaler import Evaler
-from parser.parser import Parser
+from typing import Dict, List
+from logic import lexer
+from logic.parser import Parser as Parser
+from logic.lexer import Lexer
 from utils import *
 from models import *
 import sys
 
 
 def do(prompt: str):
-    prompt = parser.parse(prompt)
     for i in range(size):
         print(ascii_uppercase[i], end=' ')
     for expr in expr_list:
         print(expr.name, end=' ')
-    prompt = dedupwc(prompt)
     print(f'| {prompt}')
-    for evc in ev(prompt, expr_list):
-        print(evc)
+    vals: List[Dict[str, bool]] = []
+    for row in make_table(size):
+        tmp: Dict[str, bool] = {}
+        i = 0
+        for c in row:
+            tmp[ascii_uppercase[i]] = bool(int(c))
+            i += 1
+        vals.append(tmp)
+    for cur in vals:
+        for v in cur.values():
+            print(int(v),end=" ") # pyright: ignore
+        try:
+            print(int(Parser(Lexer(prompt), cur).expr())) # pyright: ignore
+        except lexer.LexerException as e:
+            print(str(e))
+        
 
 
 def do_eval(expr: EXPR):
-    out = []
-    for evc in ev(expr.expr_par, expr_list, True):
-        out.append(evc)
+    out = [] 
+    vals: List[Dict[str, bool]] = []
+    for row in make_table(size):
+        tmp: Dict[str, bool] = {}
+        i = 0
+        for c in row:
+            tmp[ascii_uppercase[i]] = bool(int(c))
+            i += 1
+        vals.append(tmp)
+
+    for cur in vals:
+        out.append(int(Parser(Lexer(prompt), cur).expr())) # pyright: ignore
     expr.res = out
 
 
@@ -35,8 +57,8 @@ def resize_expr_l():
 if __name__ == '__main__':
     usage()
     size = get_size()
-    ev = Evaler(size)
-    parser = Parser('')
+    # ev = Evaler(size)
+    # parser = Parser('')
     last_evaled_prompt = ''
     expr_list: List[EXPR] = []
     while 1:
@@ -59,7 +81,6 @@ if __name__ == '__main__':
 
         if prompt == 'RE':
             size = int(input('How many elements?> '))
-            ev.re_size(size)
             resize_expr_l()
             for expr in expr_list:
                 do_eval(expr)
@@ -68,7 +89,6 @@ if __name__ == '__main__':
 
         if prompt.startswith('RE'):
             size = int(prompt.split(' ')[1])
-            ev.re_size(size)
             resize_expr_l()
             for expr in expr_list:
                 do_eval(expr)
@@ -116,17 +136,13 @@ if __name__ == '__main__':
             for i in range(size):
                 print(ascii_uppercase[i], end=' ')
             print()
-            for it in ev.table:
+            for it in make_table(size):
                 for i in range(size):
                     exec(f'{ascii_uppercase[i]} = int(it[{i}])')
                     exec(f'print({ascii_uppercase[i]}, end=" ")')
                 print()
             continue
 
-        if prompt == 'M':
-            ev.more_info = not ev.more_info
-            print('Enabled' if ev.more_info else 'Disabled', 'more info')
-            continue
 
         if prompt.startswith('LET'):
             payload = ogp.split(' ')
@@ -145,7 +161,7 @@ if __name__ == '__main__':
                     id=payload[1],
                     name=payload[1].upper(),
                     expr_raw=payload[2],
-                    expr_par=parser.parse(payload[2]),
+                    expr_par="NOT USED",
                     res=[0 for _ in range(2**size)],
                     hidden=False,
                 )
@@ -179,8 +195,8 @@ if __name__ == '__main__':
                     continue
                 print(expr.name, end=' | ')
             print()
-            for i in range(2**ev.size):
-                for num in ev.table[i]:
+            for i in range(2**size):
+                for num in make_table(size)[i]:
                     print(num, end=' ')
                 print('| ', end='')
                 for expr in expr_list:
