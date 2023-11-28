@@ -3,13 +3,13 @@ from typing import Tuple, List
 
 
 TOKEN_TYPES = [
-    ('VAR', r'\w\d'),
     ('VAR', r'\w'),
-    ('OR', r'\+'),
-    ('AND', r'\*'),
     ('NOT', r'\!'),
+    ('OR', r'\+'),
     ('LPAREN', r'\('),
     ('RPAREN', r'\)'),
+    ('VAR', r'\w\d'),
+    ('AND', r'\*'),
     ('WHITESPACE', r'\s+'),
 ]
 
